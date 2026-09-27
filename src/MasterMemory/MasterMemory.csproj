@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<RootNamespace>MasterMemory</RootNamespace>
+		<AssemblyName>MasterMemory</AssemblyName>
+		<LangVersion>13</LangVersion>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Company>Cysharp</Company>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+
+		<!-- NuGet -->
+		<PackageId>MasterMemory</PackageId>
+		<Description>Embedded Typed Readonly In-Memory Document Database for .NET Core and Unity.</Description>
+		<IsPackable>true</IsPackable>
+
+		<!-- SourceGenerator Packaging configs... -->
+		<TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
+	</PropertyGroup>
+
+	<!-- for nuget publish -->
+	<Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
+		<ItemGroup>
+			<TfmSpecificPackageFile Include="$(TargetDir)\MasterMemory.SourceGenerator.dll" PackagePath="analyzers\dotnet\cs" />
+			<TfmSpecificPackageFile Include="@(SatelliteDllsProjectOutputGroupOutput->'%(FinalOutputPath)')" PackagePath="analyzers\dotnet\cs\%(SatelliteDllsProjectOutputGroupOutput.Culture)\" />
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<PackageReference Include="MessagePack" Version="3.1.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\MasterMemory.Annotations\MasterMemory.Annotations.csproj" />
+
+		<!-- We don't consume the analyzers in this library itself,
+         but we reference the project to add a package dependency so users of this library will automatically get the analyzers. -->
+		<ProjectReference Include="..\MasterMemory.SourceGenerator\MasterMemory.SourceGenerator.csproj" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Validation\ValidatableSet.Sequential.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>ValidatableSet.Sequential.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Validation\ValidatableSet.Sequential.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ValidatableSet.Sequential.tt</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>

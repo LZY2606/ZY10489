@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<LangVersion>13</LangVersion>
+		<OutputType>Library</OutputType>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Company>Cysharp</Company>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1701;1702;1705;1591</NoWarn>
+		<RootNamespace>MasterMemory</RootNamespace>
+
+		<!-- NuGet -->
+		<PackageId>MasterMemory.Annotations</PackageId>
+		<Description>Attributes of MasterMemory.</Description>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+</Project>
